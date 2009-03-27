@@ -1,5 +1,3 @@
-require 'rubygems'
-require 'activesupport'
 require 'ostruct'
 
 module TestBenchmarker
@@ -20,12 +18,6 @@ module TestBenchmarker
     
     self.clear
     
-    def self.is_subclass_of?(klass, superklass)      
-      return false if klass == Object && superklass != Object
-      return true if klass == superklass
-      return is_subclass_of?(klass.superclass, superklass)
-    end
-    
     def self.add(benchmark)
       test_class = benchmark.test_class
       
@@ -33,11 +25,11 @@ module TestBenchmarker
       return if test_class =~ /(rake_test_loader|::TestCase|::IntegrationTest)/
       
       begin
-        test_class = test_class.constantize
-      rescue
+        test_class = test_class.to_class
+      rescue TestBenchmarker::ClassNotFoundError
         return
       end
-      return unless is_subclass_of?(test_class, Test::Unit::TestCase)
+      return unless test_class.is_subclass_of?(Test::Unit::TestCase)
       
       @@classes[test_class] ||= OpenStruct.new
       @@classes[test_class].benchmarks ||= []
@@ -46,7 +38,7 @@ module TestBenchmarker
     end
     
     def self.print_results
-      return if @@classes.blank?
+      return if @@classes.nil? || @@classes.size == 0
       
       benchmark_attr = :real
       
@@ -56,7 +48,7 @@ module TestBenchmarker
         obj.sum = obj.benchmarks.inject(0) {|sum, bmark| sum + bmark.benchmark.send(benchmark_attr)}
         obj.avg = obj.sum / obj.test_count
         obj.test_class = test_class
-        class_benchmarks << obj unless obj.benchmarks.blank?
+        class_benchmarks << obj unless obj.benchmarks.nil? || obj.benchmarks.size == 0
       end
       
       puts "\n\n#{'=' * 27} Class Benchmark Results #{'=' * 27}"

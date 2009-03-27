@@ -27,20 +27,12 @@ class TestTestBenchmarker < Test::Unit::TestCase
     TestBenchmarker::TestBenchmark.new("Class4", "test_1 (Class4)", ::Benchmark.measure { sleep 0.01 })
     
     @benchmarked_classes = TestBenchmarker::TestBenchmarks.send(:class_variable_get, '@@classes')
-    @benchmarked_tests = TestBenchmarker::TestBenchmarks.send(:class_variable_get, '@@tests').map(&:test_name)
+    @benchmarked_tests = TestBenchmarker::TestBenchmarks.send(:class_variable_get, '@@tests').map{ |t| t.test_name }
     @out, @err = util_capture { TestBenchmarker::TestBenchmarks.print_results }
   end
   
   def teardown
     TestBenchmarker::TestBenchmarks.clear
-  end
-  
-  def test_is_subclass_of
-    assert TestBenchmarker::TestBenchmarks.is_subclass_of?(Class1, Test::Unit::TestCase)
-  end
-  
-  def test_is_not_subclass
-    assert !TestBenchmarker::TestBenchmarks.is_subclass_of?(Class4, Test::Unit::TestCase)
   end
   
   def test_has_expected_benchmarked_classes
