@@ -5,7 +5,7 @@ pinpoint which tests take longer so you can improve the speed of your test suite
 
 == Download
 
-Github: http://github.com/myronmarston/test_benchmarker/tree/masterd
+Github: http://github.com/myronmarston/test_benchmarker/tree/master
 
 Gem:
   gem install myronmarston-test_benchmarker --source http://gems.github.com
@@ -35,7 +35,7 @@ test_benchmarker prints two reports:
 1. Class Benchmark Results: Lists each of the Test::Unit::TestCase subclasses in the test run, from the slowest average test time to the fastest.
 2. Test Benchmark Results: Lists each of the tests that ran, from the slowest to the fastest.
 
-Example output (taken from benchmarking will_paginate's tests):
+Example output (taken from benchmarking {will_paginate's}[http://wiki.github.com/mislav/will_paginate] tests):
 
   =========================== Class Benchmark Results ===========================
   1.    0.027 secs avg time, 1.193 secs total time, 45 tests for: FinderTest
