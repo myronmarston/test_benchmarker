@@ -1,7 +1,7 @@
 module TestBenchmarker
-  VERSION = '0.9.1'
+  VERSION = '0.9.2'
 end
 
-require 'lib/test_benchmarker/test_benchmarks'
-require 'lib/test_benchmarker/test_suite'
-require 'lib/test_benchmarker/core_ext'
+require 'test_benchmarker/test_benchmarks'
+require 'test_benchmarker/test_suite'
+require 'test_benchmarker/core_ext'
