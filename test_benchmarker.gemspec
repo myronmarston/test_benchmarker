@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "test_benchmarker"
-  s.version = "0.9.0"
+  s.version = "0.9.1"
   s.date = "2009-03-27"
   s.summary = "A tool for benchmarking ruby Test::Unit tests"
   s.homepage = "http://github.com/myronmarston/test_benchmarker"
