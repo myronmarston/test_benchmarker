@@ -6,14 +6,14 @@ class FooSubSubclass < FooSubclass; end
 class Bar; end
 
 class TestCoreExt < Test::Unit::TestCase
-  def test_string_to_class
-    assert_equal TestCoreExt, 'TestCoreExt'.to_class
-    assert_equal FooSubSubclass, 'FooSubSubclass'.to_class
+  def test_string_constantize
+    assert_equal TestCoreExt, 'TestCoreExt'.constantize
+    assert_equal FooSubSubclass, 'FooSubSubclass'.constantize
   end
   
-  def test_string_to_class_not_found
-    assert_raise TestBenchmarker::ClassNotFoundError do
-      'This it not the name of a class!'.to_class
+  def test_string_constantize_for_bogus_class
+    assert_raise NameError do
+      'This it not the name of a class!'.constantize
     end
   end
   

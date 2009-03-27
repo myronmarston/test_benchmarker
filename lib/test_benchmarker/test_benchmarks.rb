@@ -25,8 +25,8 @@ module TestBenchmarker
       return if test_class =~ /(rake_test_loader|::TestCase|::IntegrationTest)/
       
       begin
-        test_class = test_class.to_class
-      rescue TestBenchmarker::ClassNotFoundError
+        test_class = test_class.constantize
+      rescue NameError
         return
       end
       return unless test_class.is_subclass_of?(Test::Unit::TestCase)
