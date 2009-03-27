@@ -1,28 +1,42 @@
-%w[rubygems rake rake/clean fileutils newgem rubigen].each { |f| require f }
-require File.dirname(__FILE__) + '/lib/test_benchmarker'
+require 'rubygems'
+require 'rake/gempackagetask'
+require 'rake/testtask'
+require 'rake/rdoctask'
+ 
+task :default => :test
 
-# Generate all the Rake tasks
-# Run 'rake -T' to see list of generated tasks (from gem root directory)
-$hoe = Hoe.new('test_benchmarker', TestBenchmarker::VERSION) do |p|
-  p.developer('FIXME full name', 'FIXME email')
-  p.changes              = p.paragraphs_of("History.txt", 0..1).join("\n\n")
-  p.post_install_message = 'PostInstall.txt' # TODO remove if post-install message not required
-  p.rubyforge_name       = p.name # TODO this is default value
-  # p.extra_deps         = [
-  #   ['activesupport','>= 2.0.2'],
-  # ]
-  p.extra_dev_deps = [
-    ['newgem', ">= #{::Newgem::VERSION}"]
-  ]
-  
-  p.clean_globs |= %w[**/.DS_Store tmp *.log]
-  path = (p.rubyforge_name == p.name) ? p.rubyforge_name : "\#{p.rubyforge_name}/\#{p.name}"
-  p.remote_rdoc_dir = File.join(path.gsub(/^#{p.rubyforge_name}\/?/,''), 'rdoc')
-  p.rsync_args = '-av --delete --ignore-errors'
+desc "Run All Tests"
+Rake::TestTask.new :test do |test|
+  test.test_files = ["test/**/*.rb"]
+  test.verbose = true
 end
 
-require 'newgem/tasks' # load /tasks/*.rake
-Dir['tasks/**/*.rake'].each { |t| load t }
-
-# TODO - want other tests/tasks run by default? Add them to the list
-# task :default => [:spec, :features]
+desc %{Update ".manifest" with the latest list of project filenames. Respect\
+.gitignore by excluding everything that git ignores. Update `files` and\
+`test_files` arrays in "*.gemspec" file if it's present.}
+task :manifest do
+  list = Dir['**/*'].sort
+  spec_file = Dir['*.gemspec'].first
+  list -= [spec_file] if spec_file
+ 
+  if File.exist?('.gitignore')
+    File.read('.gitignore').each_line do |glob|
+      glob = glob.chomp.sub(/^\//, '')
+      list -= Dir[glob]
+      list -= Dir["#{glob}/**/*"] if File.directory?(glob) and !File.symlink?(glob)
+      puts "excluding #{glob}"
+    end
+  end
+ 
+  if spec_file
+    spec = File.read spec_file
+    spec.gsub! /^(\s* s.(test_)?files \s* = \s* )( \[ [^\]]* \] | %w\( [^)]* \) )/mx do
+      assignment = $1
+      bunch = $2 ? list.grep(/^test\//) : list
+      '%s%%w(%s)' % [assignment, bunch.join(' ')]
+    end
+ 
+    File.open(spec_file, 'w') {|f| f << spec }
+  end
+  File.open('manifest.txt', 'w') {|f| f << list.join("\n") }
+end
