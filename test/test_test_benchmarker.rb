@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
 class Foo; end
-class Class1 < Test::Unit::TestCase 
+class Class1 < Test::Unit::TestCase
   def test_truth; end
 end
 
@@ -23,33 +23,33 @@ class TestTestBenchmarker < Test::Unit::TestCase
         TestBenchmarker::TestBenchmark.new("Class#{class_speed}", "test_#{test_speed} (Class#{class_speed})", ::Benchmark.measure { sleep speed })
       end
     end
-    
+
     TestBenchmarker::TestBenchmark.new("Class4", "test_1 (Class4)", ::Benchmark.measure { sleep 0.01 })
-    
+
     @benchmarked_classes = TestBenchmarker::TestBenchmarks.send(:class_variable_get, '@@classes')
     @benchmarked_tests = TestBenchmarker::TestBenchmarks.send(:class_variable_get, '@@tests').map{ |t| t.test_name }
-    @out, @err = util_capture { TestBenchmarker::TestBenchmarks.print_results }
+    @out = TestBenchmarker::TestBenchmarks.results
   end
-  
+
   def teardown
     TestBenchmarker::TestBenchmarks.clear
   end
-  
+
   def test_has_expected_benchmarked_classes
     assert_equal 3, @benchmarked_classes.keys.size
-    
+
     assert @benchmarked_classes.keys.include?(Class1)
     assert @benchmarked_classes.keys.include?(Class2)
     assert @benchmarked_classes.keys.include?(Class3)
   end
-  
+
   def test_does_not_have_classes_not_descended_from_test_unit_testcase
     assert !@benchmarked_classes.keys.include?(Class4)
   end
-  
+
   def test_has_expected_benchmarked_tests
     assert_equal 9, @benchmarked_tests.size
-    
+
     assert @benchmarked_tests.include?('test_1 (Class1)')
     assert @benchmarked_tests.include?('test_2 (Class1)')
     assert @benchmarked_tests.include?('test_3 (Class1)')
@@ -60,18 +60,18 @@ class TestTestBenchmarker < Test::Unit::TestCase
     assert @benchmarked_tests.include?('test_2 (Class3)')
     assert @benchmarked_tests.include?('test_3 (Class3)')
   end
-  
+
   def test_does_not_have_tests_not_descended_from_test_unit_testcase
     assert !@benchmarked_tests.include?("test_1 (Class4)")
   end
-  
+
   def test_class_benchmark_results
     # should be in order from slowest to fastest
     assert_match class_benchmark_regex('Class3', 1), @out
     assert_match class_benchmark_regex('Class2', 2), @out
     assert_match class_benchmark_regex('Class1', 3), @out
   end
-  
+
   def test_test_benchmark_results
     # should be in order from slowest to fastest
     assert_match test_benchmark_regex('test_3 (Class3)', 1), @out
@@ -84,9 +84,9 @@ class TestTestBenchmarker < Test::Unit::TestCase
     assert_match test_benchmark_regex('test_2 (Class1)', 8), @out
     assert_match test_benchmark_regex('test_1 (Class1)', 9), @out
   end
-  
+
   private
-  
+
   # borrowed from zentest assertions...
   def util_capture
     require 'stringio'
@@ -104,12 +104,12 @@ class TestTestBenchmarker < Test::Unit::TestCase
     $stdout = orig_stdout
     $stderr = orig_stderr
   end
-  
+
   def class_benchmark_regex(class_name, slowness_ranking)
     # http://rubular.com/regexes/6815
     /^#{slowness_ranking}\.\s+[\d\.]+ secs avg time, [\d\.]+ secs total time, [\d]+ tests for: #{Regexp.escape(class_name)}$/
   end
-  
+
   def test_benchmark_regex(test_name, slowness_ranking)
     # http://rubular.com/regexes/6816
     /^#{slowness_ranking}.\s+[\d\.]+ secs total time for: #{Regexp.escape(test_name)}$/

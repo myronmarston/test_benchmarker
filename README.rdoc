@@ -1,7 +1,7 @@
 = test_benchmarker
 
-test_benchmarker is a ruby library that benchmarks your Test::Unit test.  It's intended to help you 
-pinpoint which tests take longer so you can improve the speed of your test suite.  
+test_benchmarker is a ruby library that benchmarks your Test::Unit test.  It's intended to help you
+pinpoint which tests take longer so you can improve the speed of your test suite.
 
 == Download
 
@@ -15,22 +15,27 @@ Gem:
 Require it in your ruby project:
   require 'rubygems'
   require 'test_benchmarker'
-  
+
 Or in Rails, with Rails 2.1+ gem support, add to your config/environments/test.rb:
-  config.gem 'myronmarston-test_benchmarker', 
-    :lib => 'test_benchmarker', 
+  config.gem 'myronmarston-test_benchmarker',
+    :lib => 'test_benchmarker',
     :source => 'http://gems.github.com'
 
-Your tests will only be benchmarked when you set a value for the BENCHMARK_TESTS environment variable. 
+Your tests will only be benchmarked when you set the appropriate environment variable.  Use BENCHMARK_TESTS
+to have get the benchmark tests written to stdout.
+
 When running tests from a single ruby file:
   BENCHMARK_TESTS=true ruby path/to/test.rb
 
 Or, when using rake:
   rake test BENCHMARK_TESTS=true
 
+Alternately, if you want the test benchmarks written to a file, you can use TEST_BENCHMARKS_FILE:
+  rake test TEST_BENCHMARKS_FILE=path/to/file
+
 == Example Output
 
-test_benchmarker prints two reports: 
+test_benchmarker prints two reports:
 
 1. Class Benchmark Results: Lists each of the Test::Unit::TestCase subclasses in the test run, from the slowest average test time to the fastest.
 2. Test Benchmark Results: Lists each of the tests that ran, from the slowest to the fastest.
@@ -44,9 +49,9 @@ Example output (taken from benchmarking {will_paginate's}[http://wiki.github.com
   4.    0.000 secs avg time, 0.004 secs total time, 12 tests for: ArrayPaginationTest
   5.    0.000 secs avg time, 0.000 secs total time, 1 tests for: WillPaginate::ViewTestCase
   ===============================================================================
-  
-  
-  
+
+
+
   ============================ Test Benchmark Results ============================
   1.    0.084 secs total time for: test_ability_to_use_with_custom_finders(FinderTest)
   2.    0.071 secs total time for: test_paginate_associations(FinderTest)
