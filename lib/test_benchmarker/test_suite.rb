@@ -18,7 +18,7 @@ if ENV['BENCHMARK_TESTS'] || ENV['TEST_BENCHMARKS_FILE']
         if @@run_count == 0
           results = TestBenchmarker::TestBenchmarks.results
           if ENV['TEST_BENCHMARKS_FILE']
-            File.open(ENV['TEST_BENCHMARKS_FILE'], 'w') { |f| f << results }
+            File.open(ENV['TEST_BENCHMARKS_FILE'], 'a') { |f| f << results }
           else
             puts results
           end
