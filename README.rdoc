@@ -5,10 +5,10 @@ pinpoint which tests take longer so you can improve the speed of your test suite
 
 == Download
 
-Github: http://github.com/myronmarston/test_benchmarker/tree/master
+Github: http://github.com/myronmarston/test_benchmarker
 
 Gem:
-  gem install myronmarston-test_benchmarker --source http://gems.github.com
+  gem install test_benchmarker --source http://gemcutter.org
 
 == Usage
 
@@ -17,9 +17,7 @@ Require it in your ruby project:
   require 'test_benchmarker'
 
 Or in Rails, with Rails 2.1+ gem support, add to your config/environments/test.rb:
-  config.gem 'myronmarston-test_benchmarker',
-    :lib => 'test_benchmarker',
-    :source => 'http://gems.github.com'
+  config.gem 'test_benchmarker', :source => 'http://gemcutter.org'
 
 Your tests will only be benchmarked when you set the appropriate environment variable.  Use BENCHMARK_TESTS
 to have get the benchmark tests written to stdout.
