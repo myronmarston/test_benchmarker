@@ -19,7 +19,7 @@ class TestTestBenchmarker < Test::Unit::TestCase
   def setup
     1.upto(3) do |class_speed|
       1.upto(3) do |test_speed|
-        speed = class_speed * 0.01 + test_speed * 0.001
+        speed = class_speed * 0.05 + test_speed * 0.005
         TestBenchmarker::TestBenchmark.new("Class#{class_speed}", "test_#{test_speed} (Class#{class_speed})", ::Benchmark.measure { sleep speed })
       end
     end
