@@ -8,7 +8,7 @@ pinpoint which tests take longer so you can improve the speed of your test suite
 Github: http://github.com/myronmarston/test_benchmarker
 
 Gem:
-  gem install test_benchmarker --source http://gemcutter.org
+  gem install test_benchmarker
 
 == Usage
 
@@ -17,7 +17,7 @@ Require it in your ruby project:
   require 'test_benchmarker'
 
 Or in Rails, with Rails 2.1+ gem support, add to your config/environments/test.rb:
-  config.gem 'test_benchmarker', :source => 'http://gemcutter.org'
+  config.gem 'test_benchmarker'
 
 Your tests will only be benchmarked when you set the appropriate environment variable.  Use BENCHMARK_TESTS
 to have get the benchmark tests written to stdout.
@@ -30,6 +30,11 @@ Or, when using rake:
 
 Alternately, if you want the test benchmarks written to a file, you can use TEST_BENCHMARKS_FILE:
   rake test TEST_BENCHMARKS_FILE=path/to/file
+
+== Ruby version compatibility
+
+test_benchmarker works on ruby {1.8.6}[http://integrity186.heroku.com/test-benchmarker],
+1.8.7[http://integrity187.heroku.com/test-benchmarker] and 1.9.1[http://integrity191.heroku.com/test-benchmarker].
 
 == Example Output
 
@@ -152,7 +157,7 @@ Example output (taken from benchmarking {will_paginate's}[http://wiki.github.com
 
 (The MIT License)
 
-Copyright (c) 2009 Myron Marston, Kashless.org
+Copyright (c) 2009-2010 Myron Marston, Kashless.org
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
