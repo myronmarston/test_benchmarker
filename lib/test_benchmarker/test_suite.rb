@@ -1,4 +1,5 @@
 require 'benchmark'
+require 'test/unit/testsuite'
 
 if ENV['BENCHMARK_TESTS'] || ENV['TEST_BENCHMARKS_FILE']
   class Test::Unit::TestSuite
